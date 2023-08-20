@@ -11,10 +11,10 @@ const PickCity = props => {
     e.preventDefault();
     props.action(city)
     setCity('')
-};
+  };
 
   return (
-    <form className={styles.pickCityForm} onSubmit={handleSubmit}> 
+    <form className={styles.pickCityForm} onSubmit={handleSubmit}>
       <label>
         <TextInput placeholder="Enter city name...." value={city} onChange={e => setCity(e.target.value)} />
       </label>
