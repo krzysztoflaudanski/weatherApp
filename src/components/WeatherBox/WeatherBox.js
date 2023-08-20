@@ -9,6 +9,7 @@ const WeatherBox = () => {
   const [data, setData] = useState('');
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(false);
+  const [notFound, setNotFound] = useState('')
 
   const handleCityChange = useCallback(city => {
     setPending(true);
@@ -18,6 +19,7 @@ const WeatherBox = () => {
         if (res.status === 200) {
           return res.json()
             .then(data => {
+              console.log(data)
               const weatherData = {
                 city: data.name,
                 temp: data.main.temp,
@@ -28,7 +30,11 @@ const WeatherBox = () => {
               setPending(false);
             });
         } else {
-          setError(true)
+          setError(true);
+          return res.json()
+            .then(data => {
+              setNotFound(data.message);
+            })
         }
       })
   }, [])
@@ -38,7 +44,7 @@ const WeatherBox = () => {
       <PickCity action={handleCityChange} />
       {(data && !pending) && <WeatherSummary data={data} />}
       {(pending && !error) && <Loader />}
-      {error && <ErrorBox />}
+      {error && <ErrorBox children={notFound} />}
     </section>
   )
 };
